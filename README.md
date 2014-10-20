@@ -12,7 +12,7 @@ It is primarily designed to be run on Linux
 What will it collect?
 =======================
 
-* Keypresses
+* Keypresses - all keypresses will be logged, along with the programs that they relate to
 * Interaction with programs - for instance, which programs you spend most of your time using
 * File creation - monitoring the creation of new files
 * Music you listen to
