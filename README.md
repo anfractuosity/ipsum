@@ -28,5 +28,10 @@ The majority of data will be stored within an SQLite database.
 What results will it generate?
 =============================
 
+Can we determine what music you work best too, based on information such as the 
+number of keypresses etc.?
+
+How much time do you spend procrastinating? 
+
 
 
