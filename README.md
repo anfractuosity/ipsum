@@ -15,11 +15,17 @@ What will it collect?
 * Keypresses
 * Interaction with programs - for instance, which programs you spend most of your time using
 * File creation - monitoring the creation of new files
+* Music you listen to
+* Emotion from OpenCV
 
 
 How will data be stored?
 =========================
 
 The majority of data will be stored within an SQLite database.
+
+What results will it generate?
+=============================
+
 
 
