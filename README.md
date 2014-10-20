@@ -14,4 +14,6 @@ What will it collect?
 
 * Keypresses
 * Interaction with programs - for instance, which programs you spend most of your time using
+* File creation - monitoring the creation of new files
+
 
