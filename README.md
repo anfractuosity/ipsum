@@ -16,6 +16,7 @@ What will it collect?
 * Interaction with programs - for instance, which programs you spend most of your time using
 * File creation - monitoring the creation of new files
 * Music you listen to
+* Websites you view, along with their content
 * Emotion from OpenCV
 
 
