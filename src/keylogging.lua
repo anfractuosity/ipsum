@@ -32,17 +32,27 @@ function grabber()
 	
 	go = true
 	while go do
-		time = file:read(16)
+
+		all = file:read(24)
+		--[[time  =  file:read(16)
 		ktype = file:read(2)
 		kcode = file:read(2)
-		value = file:read(4)
+		value = file:read(4)]]--
 
+		time = string.sub(all,1,16)
+		ktype = string.sub(all,17,18)
+		kcode = string.sub(all,19,20)
+		value = string.sub(all,21,24)
+
+
+		--print(#time,#ktype,#kcode,#value)
 		ktype = conv(ktype)
 		kcode = conv(kcode)
 		value = conv(value)
 		
-		if ktype == 4 and kcode == 4 then
-			print(key[value])
+		--print(ktype,kcode,value)
+		if (value == 1 or value == 2) then
+			print("KEY ",value,"   ",key[kcode])
 		end
 	end
 end
