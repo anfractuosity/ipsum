@@ -1,0 +1,89 @@
+function conv(str)
+	sum = 0
+	for i=1,#str do
+		if i == 1 then
+			n = 0
+		elseif i == 2 then
+			n = 8
+		else
+			n = n * 2
+		end
+		sum = sum + (string.byte(str,i)*math.pow(2,n))
+	end
+	return sum
+end
+
+function grabber()
+
+	key = {}
+	local map = io.open("maps/en_GB.map","r")
+	l = map:read("*l")
+	while l ~= nil do
+		table.insert(key,l)
+		l = map:read("*l")
+	end
+	
+	local file = io.open("/dev/input/event4", "rb")
+
+	if not file then
+		print("Not root")
+		return 
+	end
+	
+	
+	-- kcode
+	--[[
+		#define REL_X			0x00
+		#define REL_Y			0x01
+	]]--
+
+
+	--ktype
+	--[[
+		#define EV_KEY			0x01
+		#define EV_REL			0x02
+		#define EV_ABS			0x03
+	]]--
+
+	--[[
+		#define BTN_MOUSE		0x110
+#define BTN_LEFT		0x110
+#define BTN_RIGHT		0x111
+#define BTN_MIDDLE		0x112
+#define BTN_SIDE		0x113
+#define BTN_EXTRA		0x114
+#define BTN_FORWARD		0x115
+#define BTN_BACK		0x116
+#define BTN_TASK		0x117
+
+	]]--
+
+
+
+
+	go = true
+	while go do
+		all = file:read(24)
+
+		time = string.sub(all,1,16)
+		ktype = string.sub(all,17,18)
+		kcode = string.sub(all,19,20)
+		value = string.sub(all,21,24)
+
+		ktype = conv(ktype)
+		kcode = conv(kcode)
+		value = conv(value)
+
+			-- left 
+		if ktype == 1 and (kcode == 272 or kcode == 273) and value == 1 then	
+			print(ktype,kcode,value)		
+		end
+
+		if ktype == 3 and (kcode == 0 or kcode == 1) then
+		--	print("axis ",kcode," pos ",value)
+		end
+	end
+end
+
+
+grabber()

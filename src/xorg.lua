@@ -734,11 +734,27 @@ extern XErrorHandler XSetErrorHandler (
 --- #define ScreenOfDisplay(dpy, scr)(&((_XPrivDisplay)dpy)->screens[scr])
 -- #define RootWindow(dpy, scr) 	(ScreenOfDisplay(dpy,scr)->root)
 
+local lib_exists, lib = pcall(require, 'bit')
 
+if lib_exists then
+	bit = lib
+else
+	bit = bit32
+end
 
+-- property change
+mask1 = bit.lshift(1,22)
 
+-- button press - this is banned
+mask2 =bit.lshift(1,2)
 
+---button release 
+mask3 = bit.lshift(1,3)
 
+-- pointer motion
+mask4 = bit.lshift(1,6)
+
+mask = bit.bor(mask3,mask4)
 
 local x11 = ffi.load("/usr/lib/x86_64-linux-gnu/libX11.so.6")
 s = ":0.0"
@@ -757,12 +773,16 @@ rwindow = display.screens[dscreen].root
 
 --window = x11.RootWindow(display,screen)
 
-x11.XSelectInput(display,rwindow,4194304)
+x11.XSelectInput(display,rwindow,mask)
+
+print("here")
 
 while true do
 	x11.XNextEvent(display,evt)
 	--print("WINDOWID ",evt.xproperty.window)
 
+
+	print("evt")
 	nitems = ffi.new("unsigned long")
 	nbytes = ffi.new("unsigned long")
 	data = ffi.new("unsigned char*")
