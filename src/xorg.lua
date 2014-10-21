@@ -784,11 +784,12 @@ while true do
 		print("BadATM")
 	end
 
+	eflag = 0
 
 	x11.XSetErrorHandler( function(display,xerror) 			
 			
-				print("error",xerror.error_code)
-
+				--print("error",xerror.error_code)
+				eflag = 1
 			end );
 	
 	stat = x11.XGetWindowProperty(display,rwindow,netactivewindow_atm,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
@@ -798,43 +799,19 @@ while true do
 		os.exit(1)
 	end
 
-	
-	
-
-	print("Stat ",stat)
-	print("format ",fmtptr[0])
- 	print("State ",nitemsptr[0])                                                    
-        print("nbytes ",nbytesptr[0])  
-	print("Window ",window)
-	print("act ",actptr[0])
-
 
 	if actptr[0] > 0 then 
 	        window = ffi.cast("unsigned long*",dataptr[0])[0]                                               
-
-
-		print("got window ",window)
-      
 		if window == 0 then
 		else 
-			print("about to get stuff from ",window)
-		-- stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
-
-		--print(ffi.string(dataptr[0]))
-
+		--	print("about to get stuff from ",window)
+	 stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
+		
+		if stat == 0 then 
+			print("On window ",ffi.string(dataptr[0]))
+		end
 		end
 	end
 	x11.XSetErrorHandler(nil)	
---	print(ffi.string(dataptr[0]))
-	--cdata = ffi.cast("unsigned long*", dataptr)
-	--print(ffi.string(dataptr,3))
-	--[[if nitemsptr[0] > 0 then
-		for i=1,tonumber(nitemsptr[0]) do
-
-			print("Item ",i,cdata[i])
-
-		
-		end	
-	end]]--
 
 end
