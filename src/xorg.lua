@@ -1,4 +1,6 @@
 
+function grabber(callback)
+
 ffi = require("ffi")
 
 
@@ -734,6 +736,7 @@ extern XErrorHandler XSetErrorHandler (
 --- #define ScreenOfDisplay(dpy, scr)(&((_XPrivDisplay)dpy)->screens[scr])
 -- #define RootWindow(dpy, scr) 	(ScreenOfDisplay(dpy,scr)->root)
 
+
 local lib_exists, lib = pcall(require, 'bit')
 
 if lib_exists then
@@ -846,3 +849,12 @@ while true do
 	x11.XSetErrorHandler(nil)	
 
 end
+
+end
+
+
+
+_m = {}
+_m.grabber = grabber
+
+return _m
