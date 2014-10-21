@@ -1,7 +1,6 @@
 function grabber(callback)
 	utils = require("utils")
 
-	print("here")
 	key = {}
 	local map = io.open("maps/en_GB.map","r")
 	l = map:read("*l")

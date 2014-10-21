@@ -1,15 +1,22 @@
 local lanes = require "lanes".configure{ with_timers = false,protect_allocator = true}
-
 local key = require ("keylogging")
 local mouse = require("mouselogging")
 local xorg = require("xorg")
 
 function callback(evtid,value)
-	print("evtid ",evtid)
+	local utils = require("utils")
+	if evtid == 1 or evtid == 2 then
+		
+		win = utils.gettopwindow()
+
+		if win ~= nil then
+			print(win["windowname"])
+		end
+	end
 	
 end
 
-threadkey = lanes.gen("*",{globals={["key"]=key}},key.grabber)
+threadkey = lanes.gen(key.grabber)
 threadmouse = lanes.gen("*",{globals={["mouse"]=mouse}},mouse.grabber)
 threadxorg = lanes.gen("*",{globals={["xorg"]=xorg}},xorg.grabber)
 
