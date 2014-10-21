@@ -693,6 +693,10 @@ extern XErrorHandler XSetErrorHandler (
     XErrorHandler	/* handler */
 );
 
+extern int XCloseDisplay(
+    Display*		/* display */
+);
+
 ]]
 
 
@@ -774,7 +778,7 @@ function gettopwindow()
 
 	x11.XSetErrorHandler( function(display,xerror) 			
 			
-				--print("error",xerror.error_code)
+				print("error",xerror.error_code)
 				eflag = 1
 			end );
 	
@@ -795,12 +799,14 @@ function gettopwindow()
 	 stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
 			
 		if stat == 0 then 
-			return {["windowid"]=window,["windowname"]=ffi.string(dataptr[0])}
+				x11.XCloseDisplay(display)
+
+				return {["windowid"]=window,["windowname"]=ffi.string(dataptr[0])}
 		end
 		end
 	end
 	x11.XSetErrorHandler(nil)	
-
+x11.XCloseDisplay(display)  
 	return nil
 
 

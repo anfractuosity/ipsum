@@ -6,17 +6,19 @@ local xorg = require("xorg")
 function callback(evtid,value)
 	local utils = require("utils")
 	if evtid == 1 or evtid == 2 then
-		
+		print("Trying to grab top")	
 		win = utils.gettopwindow()
-
+		print("Hanging?")
 		if win ~= nil then
-			print(win["windowname"])
+			print(">>>>>>>>>>>>>   ",win["windowname"])
+		else
+			print("Failed to grab window")
 		end
 	end
 	
 end
 
-threadkey = lanes.gen(key.grabber)
+threadkey = lanes.gen("*",{},key.grabber)
 threadmouse = lanes.gen("*",{globals={["mouse"]=mouse}},mouse.grabber)
 threadxorg = lanes.gen("*",{globals={["xorg"]=xorg}},xorg.grabber)
 
