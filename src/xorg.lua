@@ -754,7 +754,18 @@ mask3 = bit.lshift(1,3)
 -- pointer motion
 mask4 = bit.lshift(1,6)
 
-mask = bit.bor(mask3,mask4)
+-- visibility change
+mask5 = bit.lshift(1,16)
+
+--- enter window notify
+mask6 = bit.lshift(1,4)
+
+
+mask = 0
+for i = 21,24 do
+	mask = bit.bor(mask,bit.lshift(1,i))
+end
+print(mask)
 
 local x11 = ffi.load("/usr/lib/x86_64-linux-gnu/libX11.so.6")
 s = ":0.0"

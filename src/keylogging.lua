@@ -1,20 +1,7 @@
-function conv(str)
-	sum = 0
-	for i=1,#str do
-		if i == 1 then
-			n = 0
-		elseif i == 2 then
-			n = 8
-		else
-			n = n * 2
-		end
-		sum = sum + (string.byte(str,i)*math.pow(2,n))
-	end
-	return sum
-end
+function grabber(callback)
+	utils = require("utils")
 
-function grabber()
-
+	print("here")
 	key = {}
 	local map = io.open("maps/en_GB.map","r")
 	l = map:read("*l")
@@ -39,15 +26,16 @@ function grabber()
 		kcode = string.sub(all,19,20)
 		value = string.sub(all,21,24)
 
-		ktype = conv(ktype)
-		kcode = conv(kcode)
-		value = conv(value)
+		ktype = utils.conv(ktype)
+		kcode = utils.conv(kcode)
+		value = utils.conv(value)
 		
 		if (value == 1 or value == 2) then
-			print("KEY ",kcode,"   ",key[kcode])
+			callback(1,key[kcode])
 		end
 	end
 end
 
-
-grabber()
+_m = {}
+_m.grabber = grabber
+return _m

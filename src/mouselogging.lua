@@ -1,28 +1,7 @@
-function conv(str)
-	sum = 0
-	for i=1,#str do
-		if i == 1 then
-			n = 0
-		elseif i == 2 then
-			n = 8
-		else
-			n = n * 2
-		end
-		sum = sum + (string.byte(str,i)*math.pow(2,n))
-	end
-	return sum
-end
-
-function grabber()
+function grabber(callback)
+	utils = require("utils")
 
 	key = {}
-	local map = io.open("maps/en_GB.map","r")
-	l = map:read("*l")
-	while l ~= nil do
-		table.insert(key,l)
-		l = map:read("*l")
-	end
-	
 	local file = io.open("/dev/input/event4", "rb")
 
 	if not file then
@@ -70,13 +49,14 @@ function grabber()
 		kcode = string.sub(all,19,20)
 		value = string.sub(all,21,24)
 
-		ktype = conv(ktype)
-		kcode = conv(kcode)
-		value = conv(value)
+		ktype = utils.conv(ktype)
+		kcode = utils.conv(kcode)
+		value = utils.conv(value)
 
 			-- left 
 		if ktype == 1 and (kcode == 272 or kcode == 273) and value == 1 then	
-			print(ktype,kcode,value)		
+			--print(ktype,kcode,value)
+			callback(2)		
 		end
 
 		if ktype == 3 and (kcode == 0 or kcode == 1) then
@@ -85,5 +65,7 @@ function grabber()
 	end
 end
 
+_m = {}
+_m.grabber = grabber
 
-grabber()
+return _m
