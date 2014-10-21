@@ -654,6 +654,46 @@ extern int XDefaultScreen(
     Display*		/* display */
 );
 
+extern int XGetWindowProperty(
+    Display*		/* display */,
+    Window		/* w */,
+    Atom		/* property */,
+    long		/* long_offset */,
+    long		/* long_length */,
+    Bool		/* delete */,
+    Atom		/* req_type */,
+    Atom*		/* actual_type_return */,
+    int*		/* actual_format_return */,
+    unsigned long*	/* nitems_return */,
+    unsigned long*	/* bytes_after_return */,
+    unsigned char**	/* prop_return */
+);
+
+extern Atom XInternAtom(
+    Display*		/* display */,
+    char*	/* atom_name */,
+    Bool		/* only_if_exists */
+);
+
+typedef struct {
+	int type;
+	Display *display;	/* Display the event was read from */
+	XID resourceid;		/* resource id */
+	unsigned long serial;	/* serial number of failed request */
+	unsigned char error_code;	/* error code of failed request */
+	unsigned char request_code;	/* Major op-code of failed request */
+	unsigned char minor_code;	/* Minor op-code of failed request */
+} XErrorEvent;
+
+typedef int (*XErrorHandler) (	    /* WARNING, this type not in Xlib spec */
+    Display*	   	/* display */,
+    XErrorEvent*   	/* error_event */
+);
+
+
+extern XErrorHandler XSetErrorHandler (
+    XErrorHandler	/* handler */
+);
 
 ]]
 
@@ -706,29 +746,95 @@ s = ":0.0"
 dst = ffi.new("char[?]",#s,s)
 evt = ffi.new("XEvent")
 
-display = x11.XOpenDisplay(dst)
+display = x11.XOpenDisplay(nil)
 --modifiers = x11.XSetLocaleModifiers ("@im=none");                                                                                                                                                               
 if(x11.XOpenIM(display,nil,nil,nil)==nil) then
 	print("failed")
-else
-	print("here1")
 end
 
 dscreen = x11.XDefaultScreen(display)
-
-print(dscreen)
-
---z = ffi.cast("intptr_t",display.screens[dscreen])
-z = display.screens[dscreen].root
-print("SCR: ",z)
-
+rwindow = display.screens[dscreen].root
 
 --window = x11.RootWindow(display,screen)
 
-x11.XSelectInput(display,z,4194304)
+x11.XSelectInput(display,rwindow,4194304)
+
+while true do
+	x11.XNextEvent(display,evt)
+	--print("WINDOWID ",evt.xproperty.window)
+
+	nitems = ffi.new("unsigned long")
+	nbytes = ffi.new("unsigned long")
+	data = ffi.new("unsigned char*")
+	
+	atom = "_NET_ACTIVE_WINDOW"
+	at = ffi.new("char[?]",#atom,atom)
+	act = ffi.new("unsigned long") 
+	fmt = ffi.new("int")
+
+        netactivewindow_atm = x11.XInternAtom(display,at,false)
+
+	nitemsptr = ffi.new("unsigned long[1]",nitems)
+	dataptr = ffi.new("unsigned char*[1]",data)
+	actptr = ffi.new("unsigned long[1]",act)
+	fmtptr = ffi.new("int[1]",fmt)
+	nbytesptr = ffi.new("unsigned long[1]",nbytes)
+
+	if netactivewindow_atm == nil then
+		print("BadATM")
+	end
 
 
-print("selected input")
+	x11.XSetErrorHandler( function(display,xerror) 			
+			
+				print("error",xerror.error_code)
 
-x11.XNextEvent(display,evt)
-print("here2")
+			end );
+	
+	stat = x11.XGetWindowProperty(display,rwindow,netactivewindow_atm,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
+
+	if(stat ~= 0) then
+		print("error")
+		os.exit(1)
+	end
+
+	
+	
+
+	print("Stat ",stat)
+	print("format ",fmtptr[0])
+ 	print("State ",nitemsptr[0])                                                    
+        print("nbytes ",nbytesptr[0])  
+	print("Window ",window)
+	print("act ",actptr[0])
+
+
+	if actptr[0] > 0 then 
+	        window = ffi.cast("unsigned long*",dataptr[0])[0]                                               
+
+
+		print("got window ",window)
+      
+		if window == 0 then
+		else 
+			print("about to get stuff from ",window)
+		-- stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
+
+		--print(ffi.string(dataptr[0]))
+
+		end
+	end
+	x11.XSetErrorHandler(nil)	
+--	print(ffi.string(dataptr[0]))
+	--cdata = ffi.cast("unsigned long*", dataptr)
+	--print(ffi.string(dataptr,3))
+	--[[if nitemsptr[0] > 0 then
+		for i=1,tonumber(nitemsptr[0]) do
+
+			print("Item ",i,cdata[i])
+
+		
+		end	
+	end]]--
+
+end
