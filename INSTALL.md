@@ -1,7 +1,10 @@
 Install
 ===================
 
-Lua 5.2 or Luajit 
+System requirements:
+
+* Linux
+* Lua 5.2 or Luajit
 
 Libraries you need:
 
