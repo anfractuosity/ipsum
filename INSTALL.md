@@ -8,6 +8,7 @@ System requirements:
 
 Libraries you need:
 
+* lualanes - https://github.com/LuaLanes/lanes
 * luasockets - https://github.com/diegonehab/luasocket
 * If using lua 5.2 - you will need the FFI library - https://github.com/jmckaskill/luaffi.git
 
