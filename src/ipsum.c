@@ -11,15 +11,6 @@
 
 lua_State* L;
 
-
-static int require_lanes_core( lua_State* L)
-{
-	// leaves a copy of 'lanes.core' module table on the stack
-	luaL_requiref( L, "lanes.core", luaopen_lanes_core, 1);
-	return 1;
-}
-
-
 int luaopen_mymodule(lua_State *L){
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
