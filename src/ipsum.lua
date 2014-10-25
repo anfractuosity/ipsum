@@ -47,7 +47,7 @@ threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
-r1 = threadkey(callback,settings["keyboard"])
+r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"])
 r2 = threadmouse(callback,settings["mouse"])
 r3 = threadxorg(callback)
 

@@ -1,8 +1,8 @@
-function grabber(callback,ev)
+function grabber(callback,ev,keymap)
 	utils = require("utils")
 
 	key = {}
-	local map = io.open("maps/en_GB.map","r")
+	local map = io.open(keymap,"r")
 	l = map:read("*l")
 	while l ~= nil do
 		table.insert(key,l)
