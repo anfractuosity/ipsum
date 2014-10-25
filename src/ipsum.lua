@@ -2,7 +2,7 @@ local lanes = require "lanes".configure{ with_timers = false,protect_allocator =
 local key = require ("keylogging")
 local mouse = require("mouselogging")
 local xorg = require("xorg")
-
+io.stdout:setvbuf 'no' 
 lasthash = {["tmp"]="hi"}
 
 local lind = lanes.linda()
@@ -11,9 +11,9 @@ local lock = lanes.genlock(lind,"M",1)
 
 function callback(evtid,value)
 	if evtid==3 then
-		print("call back ",evtid,value["windowname"])
+		print("call back ",evtid," ",value["windowname"])
 	else
-		print("call back ",evtid,value)
+		print("call back ",evtid," ",value)
 	end
 end
 
