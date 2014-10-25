@@ -6,9 +6,9 @@
 #include "lanes.h"
 #include "tools.h"
 #include "luasocket.h"
-
 #include "lua/ext.h"
 #include <stdint.h>
+
 lua_State* L;
 
 
@@ -19,33 +19,12 @@ static int require_lanes_core( lua_State* L)
 	return 1;
 }
 
- int lanes_core_loader(lua_State* L)
- {
- lua_pushliteral(L, "lanes.core");
- luaopen_lanes_core(L);
- return 1;
-}
-
-int load_lanes_lua( lua_State* L)
-{
-    luaL_dofile( L,"l.lua");
-     //printf("%s\n",lua_tostring(L,-1));                                                                                                                                                                      
-}
-
 
 int luaopen_mymodule(lua_State *L){
-
-lua_getglobal(L, "package");
-lua_getfield(L, -1, "preload");
-lua_pushcfunction(L, luaopen_socket_core);                                                                                          
-lua_setfield(L,-2,"socket.core");
-lua_pop(L,2);
-//tcp_open(L);
-
-
-
-
-
+	lua_getglobal(L, "package");
+	lua_getfield(L, -1, "preload");
+	lua_pushcfunction(L, luaopen_socket_core);                                                                                          	   lua_setfield(L,-2,"socket.core");
+	lua_pop(L,2);
 	return 0;
 }
 
@@ -55,59 +34,30 @@ int main ( int argc, char *argv[] )
 	L = luaL_newstate();
 
     	luaL_openlibs(L); /* Load Lua libraries */
-
-//require_lanes_core(L);
-
-
 	lua_register(L, "luaopen_mymodule", luaopen_mymodule); 
 
-/*
-lua_getglobal(L, "package");
-lua_getfield(L, -1, "preload");
-lua_pushcfunction(L, lanes_core_loader);
-lua_setfield(L, -2, "lanes.core");
-lua_pop(L, 2);
-*/
+	lua_getglobal(L, "package");
+	lua_getfield(L, -1, "preload");
+	lua_pushcfunction(L, luaopen_socket_core);
+	lua_setfield(L,-2,"socket.core");
+	lua_pop(L,2);
 
+	luaL_requiref( L, "lanes.core", luaopen_lanes_core, 1);
 
-lua_getglobal(L, "package");
-lua_getfield(L, -1, "preload");
-lua_pushcfunction(L, luaopen_socket_core);                                                                                          lua_setfield(L,-2,"socket.core");
-lua_pop(L,2);
-//tcp_open(L);
+	#include "lua/loadlua.c"
 
+	intptr_t si =  &_binary_ipsum_lua_size;
+	char *tmp = malloc(si+1);
+	memset(tmp,0,si+1);
+	memcpy(tmp,&_binary_ipsum_lua_start,si);
 
-luaL_requiref( L, "lanes.core", luaopen_lanes_core, 1);
+	int ret = luaL_dostring(L,tmp);
 
+	if(ret!=0){
+		printf("%s\n", lua_tostring(L, -1));
+	}
 
-
-
-
-
-
-
-
-#include "lua/loadlua.c"
-
-
-
-
-
-
-intptr_t si =  &_binary_ipsum_lua_size;
-char *tmp = malloc(si+1);
-
-memset(tmp,0,si+1);
-memcpy(tmp,&_binary_ipsum_lua_start,si);
-
-//printf("%s",tmp);
-
-int ret = luaL_dostring(L,tmp);
-
-if(ret!=0){printf("%s\n", lua_tostring(L, -1));
-printf("error");	}
 	lua_close(L);
-
 	return 0;
 }
 
