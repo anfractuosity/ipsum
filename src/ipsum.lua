@@ -55,6 +55,7 @@ r3 = threadxorg(callback)
 --x,y,z = r3:join()
 
 x,y,z = r1:join()
+print(x,y,z)
 x,y,z = r2:join()
 x,y,z = r3:join()
 --r1:join()

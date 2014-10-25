@@ -831,8 +831,20 @@ function conv(str)
 	return sum
 end
 
+function StringBytesToNumber(str)
+local num = 0
+local len = #str
+for i = 1,len do
+num = num + string.byte(str,i) * 256^(len-i)
+end
+return num
+end
+
+
+
 _m = {}
 _m.conv = conv
 _m.ffi = ffi
 _m.gettopwindow = gettopwindow
+_m.StringBytesToNumber = StringBytesToNumber
 return _m

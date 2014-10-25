@@ -1,5 +1,5 @@
 {
 	"keyboard"    : "/dev/input/event3",
-	"keyboardmap" : "maps/en_GB.map",
+	"keyboardmap" : "maps/mine.map",
 	"mouse"       : "/dev/input/event4" 
 }
