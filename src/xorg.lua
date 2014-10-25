@@ -75,6 +75,10 @@ for i = 21,24 do
 end
 
 local x11 = ffi.load("/usr/lib/x86_64-linux-gnu/libX11.so.6")
+if x11 == nil then
+	print("failed to find library")
+end
+
 s = ":0.0"
 
 dst = ffi.new("char[?]",#s,s)
