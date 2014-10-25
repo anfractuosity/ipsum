@@ -81,8 +81,12 @@ dst = ffi.new("char[?]",#s,s)
 evt = ffi.new("XEvent")
 
 display = x11.XOpenDisplay(nil)
+if display == nil then
+	print("failed")
+	return
+end
 --modifiers = x11.XSetLocaleModifiers ("@im=none");                                                                                                                                                               
-if(x11.XOpenIM(display,nil,nil,nil)==nil) then
+if x11.XOpenIM(display,nil,nil,nil)==nil then
 	print("failed")
 	return
 end
