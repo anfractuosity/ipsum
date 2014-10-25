@@ -45,7 +45,7 @@ threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
 r1 = threadkey(callback)
 r2 = threadmouse(callback)
-r3 = threadxorg(callback)
+--r3 = threadxorg(callback)
 
 
 --x,y,z = r3:join()
