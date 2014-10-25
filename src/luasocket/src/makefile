@@ -51,8 +51,8 @@ LDIR_macosx?=share/lua/$(LUAV)
 # /usr/local/include
 # /usr/local/include/lua$(LUAV)
 # where lua headers are found for linux builds
-LUAINC_linux_base?=/usr/include
-LUAINC_linux?=$(LUAINC_linux_base)/lua/$(LUAV)
+LUAINC_linux_base?=../../LuaJIT-2.0.3/src
+LUAINC_linux?=$(LUAINC_linux_base)
 LUAPREFIX_linux?=/usr/local
 CDIR_linux?=lib/lua/$(LUAV)
 LDIR_linux?=share/lua/$(LUAV)
@@ -239,6 +239,7 @@ MIME_SO=mime.$(SO).$(MIME_V)
 UNIX_SO=unix.$(SO)
 SERIAL_SO=serial.$(SO)
 SOCKET=$(SOCKET_$(PLAT))
+STATIC_A=libluasocket.a
 
 #------
 # Settings selected for platform
@@ -341,7 +342,7 @@ none:
 	@echo "where PLATFORM is one of these:"
 	@echo "   $(PLATS)"
 
-all: $(SOCKET_SO) $(MIME_SO)
+all: $(SOCKET_SO) $(MIME_SO) $(STATIC_A)
 
 $(SOCKET_SO): $(SOCKET_OBJS)
 	$(LD) $(SOCKET_OBJS) $(LDFLAGS)$@
@@ -356,6 +357,9 @@ $(UNIX_SO): $(UNIX_OBJS)
 
 $(SERIAL_SO): $(SERIAL_OBJS)
 	$(LD) $(SERIAL_OBJS) $(LDFLAGS)$@
+
+$(STATIC_A): $(SOCKET_OBJS)
+	ar rc $@ $(SOCKET_OBJS)
 
 install: 
 	$(INSTALL_DIR) $(INSTALL_TOP_LDIR)

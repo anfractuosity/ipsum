@@ -99,7 +99,6 @@ while true do
 	--print("WINDOWID ",evt.xproperty.window)
 
 
-	print("evt")
 	nitems = ffi.new("unsigned long")
 	nbytes = ffi.new("unsigned long")
 	data = ffi.new("unsigned char*")
