@@ -74,9 +74,11 @@ for i = 21,24 do
 	mask = bit.bor(mask,bit.lshift(1,i))
 end
 
-local x11 = ffi.load("libX11.so.6")
-if x11 == nil then
+ok, x11 = pcall(ffi.load,"libX11.so.6")
+
+if not ok then
 	print("failed to load libX11.so.6")
+	return
 end 
 
 s = ":0.0"
