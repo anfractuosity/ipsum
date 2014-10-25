@@ -1,0 +1,4 @@
+{
+	"keyboard" : "/dev/input/event3",
+	"mouse"    : "/dev/input/event4" 
+}

@@ -33,11 +33,10 @@ if file == nil then
 	return
 end
 
---local settings = JSON:decode([[{"hi":"bob"}]]) -- decode example
+local settings = JSON:decode(file:read("*all")) -- decode example
 
 
 --print(settings["hi"])
-
 
 
 
@@ -48,8 +47,8 @@ threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
-r1 = threadkey(callback,JSON["keyboard"])
-r2 = threadmouse(callback,JSON["mouse"])
+r1 = threadkey(callback,settings["keyboard"])
+r2 = threadmouse(callback,settings["mouse"])
 r3 = threadxorg(callback)
 
 
