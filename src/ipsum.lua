@@ -27,6 +27,11 @@ glob={["lasthash"]=lasthash,
 
 JSON = require("JSON") 
 
+file = io.open("settings.json", "r")
+if file == nil then
+	print("Need settings.json")
+	return
+end
 
 --local settings = JSON:decode([[{"hi":"bob"}]]) -- decode example
 
@@ -43,8 +48,8 @@ threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
-r1 = threadkey(callback)
-r2 = threadmouse(callback)
+r1 = threadkey(callback,JSON["keyboard"])
+r2 = threadmouse(callback,JSON["mouse"])
 r3 = threadxorg(callback)
 
 

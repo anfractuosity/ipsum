@@ -2,7 +2,7 @@ function grabber(callback)
 	utils = require("utils")
 
 	key = {}
-	local file = io.open("/dev/input/event4", "rb")
+	local file = io.open(ev, "rb")
 
 	if not file then
 		print("Not root")

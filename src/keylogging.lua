@@ -1,4 +1,4 @@
-function grabber(callback)
+function grabber(callback,ev)
 	utils = require("utils")
 
 	key = {}
@@ -9,7 +9,7 @@ function grabber(callback)
 		l = map:read("*l")
 	end
 	
-	local file = io.open("/dev/input/event3", "rb")
+	local file = io.open(ev, "rb")
 
 	if not file then
 		print("Not root")
