@@ -84,10 +84,22 @@ display = x11.XOpenDisplay(nil)
 --modifiers = x11.XSetLocaleModifiers ("@im=none");                                                                                                                                                               
 if(x11.XOpenIM(display,nil,nil,nil)==nil) then
 	print("failed")
+	return
 end
 
 dscreen = x11.XDefaultScreen(display)
+if dscreen == nil then
+	print("failed")
+	return
+end
+
+
 rwindow = display.screens[dscreen].root
+
+if rwindow == nil then
+	print("failed")
+	return
+end
 
 --window = x11.RootWindow(display,screen)
 
