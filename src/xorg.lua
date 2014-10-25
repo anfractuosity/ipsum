@@ -74,10 +74,10 @@ for i = 21,24 do
 	mask = bit.bor(mask,bit.lshift(1,i))
 end
 
-local x11 = ffi.load("/usr/lib/x86_64-linux-gnu/libX11.so.6")
+local x11 = ffi.load("libX11.so.6")
 if x11 == nil then
-	print("failed to find library")
-end
+	print("failed to load libX11.so.6")
+end 
 
 s = ":0.0"
 
@@ -85,7 +85,8 @@ dst = ffi.new("char[?]",#s,s)
 evt = ffi.new("XEvent")
 
 display = x11.XOpenDisplay(nil)
-if display == nil then
+
+if display == nil  then
 	print("failed")
 	return
 end
@@ -110,13 +111,11 @@ if rwindow == nil then
 end
 
 --window = x11.RootWindow(display,screen)
-
-x11.XSelectInput(display,rwindow,mask)
+ret= x11.XSelectInput(display,rwindow,mask)
 
 
 while true do
 	x11.XNextEvent(display,evt)
-	--print("WINDOWID ",evt.xproperty.window)
 
 
 	nitems = ffi.new("unsigned long")
