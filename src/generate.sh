@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Auto generates resource files for .lua files
+# and generates header file and C code to include them :)
+
+
 declare -A memstart
 declare -A memsize
 
