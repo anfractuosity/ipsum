@@ -1,4 +1,5 @@
 ipsummake:
+	-mkdir lua
 	-./generate.sh
 	cd LuaJIT-2.0.3 && $(MAKE)
 	cd lualanes/src && $(MAKE) 
