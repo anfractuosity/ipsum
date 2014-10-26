@@ -12,6 +12,74 @@ function grabber(callback,ev,keymap)
 
                  }
 
+
+	symbol = {
+		
+			["one"] = "1",
+ ["two"] = "2",
+ ["three"] = "3",
+ ["four"] = "4",
+ ["five"] = "5",
+ ["six"] = "6",
+ ["seven"] = "7",
+ ["eight"] = "8",
+ ["nine"] = "9",
+ ["zero"] = "0",
+ ["minus"] = "-",
+ ["equal"] = "=",
+ ["tab"] = "	",
+ ["plus"]="+",
+ ["bracketleft"] = "[",
+ ["bracketright"] = "]",
+ ["Return"] = "\n",
+ ["semicolon"] = ";",
+ ["apostrophe"] = "'",
+ ["grave"] = "`",
+ ["numbersign"] = "#",
+ ["comma"] = ",",
+ ["period"] = ".",
+ ["slash"] = "/",
+ ["less"] = "<",
+ ["greater"] = ">",
+ ["question"] = "?",
+ ["space"] = " ",
+ ["backslash"] = "\\",
+ ["asterisk"] = "*",
+ ["exclam"] = "!",
+ ["quotedbl"] = "\"",
+ ["dollar"] = "$",
+ ["percent"] = "%",
+ ["asciicircum"] = "^",
+ ["parenleft"] = "(",
+ ["parenright"] = ")",
+ ["underscore"] = "_",
+ ["ampersand"] = "&",
+ ["bar"] = "|",
+  ["colon"] = ":", 
+ ["at"] = "@", 
+ ["asciitilde"] = "~", 
+ ["braceleft"] = "{", 
+ ["braceright"] = "}", 
+  ["KP_Divide"] = "/", 
+ ["KP_Multiply"] = "*", 
+ ["KP_Subtract"] = "-", 
+ ["KP_Add"] = "+", 
+ ["KP_Period"] = ".", 
+ ["KP_0"] = "0", 
+ ["KP_1"] = "1", 
+ ["KP_2"] = "2",  
+ ["KP_3"] = "3",  
+ ["KP_4"] = "4",  
+ ["KP_5"] = "5",  
+ ["KP_6"] = "6",  
+ ["KP_7"] = "7",  
+ ["KP_8"] = "8",  
+ ["KP_9"] = "9",  
+
+		 }
+
+
+
 	keytable = {}
 	
 	
@@ -131,8 +199,22 @@ function grabber(callback,ev,keymap)
 			
 				
 				k = key[kcode][sum+1]
+
+				if(string.sub(k,1,1)=="+")then
+					k = string.sub(k,2)
+				else
+					if symbol[k] ~= nil then
+						k = symbol[k]
+					end	
+				end
+				if #k > 1 then
+					k = "<"..k..">"
+				end
 				--print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
-                                callback(1,"press "..k)
+                                
+
+		io.write(k)
+--callback(1,"press "..k)
 
 
 
