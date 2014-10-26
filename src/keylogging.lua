@@ -13,7 +13,9 @@ function grabber(callback,ev,keymap)
 
                  }
 
-
+	keytable = {}
+	
+	
 
 
 
@@ -23,7 +25,17 @@ function grabber(callback,ev,keymap)
 	local map = io.open(keymap,"r")
 	l = map:read("*l")
 	while l ~= nil do
-		table.insert(key,l)
+		tbl = {}
+		
+		i = 1
+		for col in string.gmatch(l, "([^ ]+)") do 
+			tbl[i] = col
+			i = i + 1
+		end
+	
+		table.insert(key,tbl)
+		
+
 		l = map:read("*l")
 	end
 	
@@ -64,52 +76,42 @@ function grabber(callback,ev,keymap)
 			  goto cont
 		end
 
-		if (value == 0 or value == 1 or value == 2) then
 			if value == 0 then
 				-- value == 0 ---- key release
 				activekeys[kcode] = 0
 			
-			else
+			elseif value == 1 or value == 2 then
 				activekeys[kcode] = 1
-
-
-
-                                if kcode > 0 then
-
-					line = key[kcode]
-					i = 0
-
-
 				
 
-
-					cols = {}
-        				for col in string.gmatch(line, "([^ ]+)") do
-        					i = i + 1	
-						cols[i] = col	
+					
+				repkeycode = 0
+				sum = 0
+				active = 0
+				for i=1,255 do
+					if activekeys[i] == 1 then
+						w = weight[key[i][1]] 
+						if w ~= nil then
+							sum = sum + w
+						else
+							repkeycode = i
+						end
+						active = active + 1
 					end
+				end
+		
+				print("SUM ",sum," ACTIVE ",active)
 
-					k = cols[1]					
+				if active > 1 then --and weight[key[kcode][1]] ~= nil then
+					-- ok so we've got a modifier
+					-- pick last non-modifier key
+					kcode = repkeycode
+					sum = 0
+				end
 
+				k = key[kcode][sum+1]
 
-                                       callback(1,"press "..k)
-                                end
-
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                --callback(1,"press "..k)
 
 
 
@@ -117,7 +119,6 @@ function grabber(callback,ev,keymap)
 				-- value == 2 ---- key repeat
 				--callback(1,key[kcode])
 			end
-		end
 
 		::cont::
 	end
