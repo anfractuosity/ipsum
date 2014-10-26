@@ -69,7 +69,7 @@ packers['string_compat'] = function (buffer, str)
     elseif n <= 0xFFFF then
         buffer[#buffer+1] = char(0xDA)          -- str16
         buffer[#buffer+1] = pack('>I2', n)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xDB)          -- str32
         buffer[#buffer+1] = pack('>I4', n)
     else
@@ -88,7 +88,7 @@ packers['_string'] = function (buffer, str)
     elseif n <= 0xFFFF then
         buffer[#buffer+1] = char(0xDA)          -- str16
         buffer[#buffer+1] = pack('>I2', n)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xDB)          -- str32
         buffer[#buffer+1] = pack('>I4', n)
     else
@@ -105,7 +105,7 @@ packers['binary'] = function (buffer, str)
     elseif n <= 0xFFFF then
         buffer[#buffer+1] = char(0xC5)          -- bin16
         buffer[#buffer+1] = pack('>I2', n)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xC6)          -- bin32
         buffer[#buffer+1] = pack('>I4', n)
     else
@@ -133,7 +133,7 @@ packers['map'] = function (buffer, tbl, n)
     elseif n <= 0xFFFF then
         buffer[#buffer+1] = char(0xDE)          -- map16
         buffer[#buffer+1] = pack('>I2', n)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xDF)          -- map32
         buffer[#buffer+1] = pack('>I4', n)
     else
@@ -151,7 +151,7 @@ packers['array'] = function (buffer, tbl, n)
     elseif n <= 0xFFFF then
         buffer[#buffer+1] = char(0xDC)          -- array16
         buffer[#buffer+1] = pack('>I2', n)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xDD)          -- array32
         buffer[#buffer+1] = pack('>I4', n)
     else
@@ -233,7 +233,7 @@ packers['unsigned'] = function (buffer, n)
         elseif n <= 0xFFFF then
             buffer[#buffer+1] = char(0xCD)      -- uint16
             buffer[#buffer+1] = pack('>I2', n)
-        elseif n <= 0xFFFFFFFF then
+        elseif n <= 0xFFFFFFFF.0 then
             buffer[#buffer+1] = char(0xCE)      -- uint32
             buffer[#buffer+1] = pack('>I4', n)
         else
@@ -359,7 +359,7 @@ packers['ext'] = function (buffer, tag, data)
         buffer[#buffer+1] = char(0xC8)          -- ext16
         buffer[#buffer+1] = pack('>I2', n)
         buffer[#buffer+1] = pack('>i1', tag)
-    elseif n <= 0xFFFFFFFF then
+    elseif n <= 0xFFFFFFFF.0 then
         buffer[#buffer+1] = char(0xC9)          -- ext32
         buffer[#buffer+1] = pack('>I4', n)
         buffer[#buffer+1] = pack('>i1', tag)
