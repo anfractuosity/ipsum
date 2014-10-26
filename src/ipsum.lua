@@ -1,4 +1,4 @@
-local lanes = require "lanes".configure{ with_timers = false,protect_allocator = true } --,on_state_create = luaopen_mymodule}
+local lanes = require "lanes".configure{ with_timers = false,protect_allocator = true,on_state_create = luaopen_mymodule}
 local key = require ("keylogging")
 local mouse = require("mouselogging")
 local xorg = require("xorg")

@@ -30,7 +30,7 @@
 #define PROPAGATE_ALLOCF_ALLOC() luaL_newstate()
 #endif // PROPAGATE_ALLOCF
 
-#define USE_DEBUG_SPEW 1
+//#define USE_DEBUG_SPEW 1
 #if USE_DEBUG_SPEW
 extern char const* debugspew_indent;
 #define INDENT_BEGIN "%.*s "
