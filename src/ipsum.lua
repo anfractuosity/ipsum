@@ -8,6 +8,7 @@ lasthash = {["tmp"]="hi"}
 local lind = lanes.linda()
 local lock = lanes.genlock(lind,"M",1)
 
+print(arg[1])
 
 function callback(evtid,value)
 	if evtid==3 then
@@ -62,7 +63,7 @@ threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
-r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"])
+r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"],settings["keylog"])
 r2 = threadmouse(callback,settings["mouse"])
 r3 = threadxorg(callback)
 

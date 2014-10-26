@@ -23,6 +23,14 @@ extern int core(lua_State *L){
 
 }
 
+    void setfield (const int index, char *value) {
+      lua_pushnumber(L, index);
+      lua_pushstring(L, value);
+      lua_settable(L, -3);
+    }
+
+
+
 int main ( int argc, char *argv[] )
 {
 	L = luaL_newstate();
@@ -39,6 +47,19 @@ int main ( int argc, char *argv[] )
 	lua_pushcfunction(L, luaopen_socket_core);
 	lua_setfield(L,-2,"socket.core"); 
 	lua_pop(L,2);
+
+	lua_newtable(L);
+
+	int i = 1;
+
+	for(i=1;i<argc+1;i++){
+	      	setfield(i,argv[i]);       /* table.b = ct->b */
+	}
+      	lua_setglobal(L, "arg");    /* `name' = table */
+
+
+
+
 
 	#include "lua/loadlua.c"
 

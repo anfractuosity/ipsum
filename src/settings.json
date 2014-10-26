@@ -1,5 +1,6 @@
 {
 	"keyboard"    : "/dev/input/event3",
+	"keylog"      : "log2.bin",
 	"keyboardmap" : "maps/mine.map",
 	"mouse"       : "/dev/input/event4" 
 }

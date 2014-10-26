@@ -1,7 +1,7 @@
-function grabber(callback,ev,keymap)
+function grabber(callback,ev,keymap,output)
 	socket = require("socket")
 	
-	log = io.open("log.bin", "ab")
+	log = io.open(output, "ab")
 	
 	weight = {
 	      ["Shift"]=		        1,
