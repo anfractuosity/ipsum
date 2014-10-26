@@ -1,7 +1,6 @@
 function grabber(callback,ev,keymap)
-
+	socket = require("socket")
 	weight = {
-
 	      ["Shift"]=		        1,
 	      ["AltGr"]=			2,
 	      ["Control"]=			4,
@@ -65,14 +64,18 @@ function grabber(callback,ev,keymap)
 		kcode = string.sub(all,19,20)
 		value = string.sub(all,21,24)
 
+
+		time = utils.conv(time)
 		ktype = string.byte(ktype,1,1)
 		kcode = string.byte(kcode,1,1)
 		--kcode = utils.conv(kcode)
 		value = string.byte(value,1,1)
 		--print(ktype,kcode,value)
 
+
 		
 		if ktype ~= 1 then
+			  --print("Odd ktype - ",ktype)
 			  goto cont
 		end
 
@@ -81,36 +84,54 @@ function grabber(callback,ev,keymap)
 				activekeys[kcode] = 0
 			
 			elseif value == 1 or value == 2 then
-				activekeys[kcode] = 1
+
 				
+				if value == 1 then
+					activekeys[kcode] = 1
+				else
+					activekeys[kcode] = 2
+				end
 
 					
-				repkeycode = 0
+				repkeycode = -1
+				repkeycoder = -1
+
 				sum = 0
 				active = 0
 				for i=1,255 do
-					if activekeys[i] == 1 then
+					if activekeys[i] >= 1 then
 						w = weight[key[i][1]] 
 						if w ~= nil then
 							sum = sum + w
 						else
-							repkeycode = i
+							if activekeys[i] == 2 then
+								repkeycoder = i
+							else
+								repkeycode = i
+							end
 						end
 						active = active + 1
 					end
 				end
 		
-				print("SUM ",sum," ACTIVE ",active)
+				--print("WSUM ",sum," ACTIVE ",active)
 
 				if active > 1 then --and weight[key[kcode][1]] ~= nil then
 					-- ok so we've got a modifier
 					-- pick last non-modifier key
-					kcode = repkeycode
-					sum = 0
+					if repkeycoder > -1 then 
+						kcode = repkeycoder
+						--sum = 0
+					elseif repkeycode > -1 then
+						kcode = repkeycode
+						--sum = 0
+					end
+			
 				end
-
+			
+				
 				k = key[kcode][sum+1]
-
+				print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
                                 --callback(1,"press "..k)
 
 
