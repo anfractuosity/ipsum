@@ -120,10 +120,10 @@ function grabber(callback,ev,keymap)
 					-- ok so we've got a modifier
 					-- pick last non-modifier key
 					if repkeycoder > -1 then 
-						kcode = repkeycoder
+						--kcode = repkeycoder
 						--sum = 0
 					elseif repkeycode > -1 then
-						kcode = repkeycode
+						--kcode = repkeycode
 						--sum = 0
 					end
 			
