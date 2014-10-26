@@ -2,11 +2,6 @@
 -- lua-MessagePack : <http://fperrad.github.com/lua-MessagePack/>
 --
 
-local luac = string.dump(load "a = 1")
-local header = { luac:sub(1, 12):byte(1, 12) }
-local SIZEOF_NUMBER = header[11]
-local NUMBER_INTEGRAL = 1 == header[12]
-
 local assert = assert
 local error = error
 local pairs = pairs
@@ -886,16 +881,19 @@ end
 
 set_string'string_compat'
 set_integer'signed'
-if NUMBER_INTEGRAL then
+if math_type(0.0) == 'integer' then
+    packers['double'] = packers['integer']
+    packers['float'] = packers['integer']
     set_number'integer'
-elseif SIZEOF_NUMBER == 4 then
+elseif #pack('n', 0.0) == 4 then
+    packers['double'] = packers['float']
     set_number'float'
 else
+    m.full64bits = true
     set_number'double'
 end
 set_array'without_hole'
 
-m.full64bits = true
 m._VERSION = "0.3.0"
 m._DESCRIPTION = "lua-MessagePack : a pure Lua implementation"
 m._COPYRIGHT = "Copyright (c) 2012-2014 Francois Perrad"
