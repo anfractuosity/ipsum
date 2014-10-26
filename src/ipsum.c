@@ -19,21 +19,26 @@ int luaopen_mymodule(lua_State *L){
 	return 0;
 }
 
+extern int core(lua_State *L){
+
+}
 
 int main ( int argc, char *argv[] )
 {
 	L = luaL_newstate();
 
     	luaL_openlibs(L); /* Load Lua libraries */
+
+	//luaopen_package(L);
+	
+	luaL_requiref(L, "lanes.core", luaopen_lanes_core, 1); 
 	lua_register(L, "luaopen_mymodule", luaopen_mymodule); 
 
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
 	lua_pushcfunction(L, luaopen_socket_core);
-	lua_setfield(L,-2,"socket.core");
+	lua_setfield(L,-2,"socket.core"); 
 	lua_pop(L,2);
-
-	luaL_requiref( L, "lanes.core", luaopen_lanes_core, 1);
 
 	#include "lua/loadlua.c"
 

@@ -131,8 +131,8 @@ function grabber(callback,ev,keymap)
 			
 				
 				k = key[kcode][sum+1]
-				print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
-                                --callback(1,"press "..k)
+				--print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
+                                callback(1,"press "..k)
 
 
 
