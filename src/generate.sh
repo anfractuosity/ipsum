@@ -10,6 +10,7 @@ declare -A memsize
 cp *.lua lua
 find luasocket/src -name "*.lua" | xargs -I {} cp {} lua/
 find lualanes/src -name "*.lua" | xargs -I {} cp {} lua/   
+find luamessagepack/src -name "*.lua" | xargs -I {} cp {} lua/   
 
 cd lua
 

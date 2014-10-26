@@ -35,6 +35,29 @@ end
 
 local settings = JSON:decode(file:read("*all")) -- decode example
 
+
+
+
+local mp = require ("MessagePack")
+local ltn12 = require 'ltn12'
+src = ltn12.source.file(io.open('log.bin', 'rb'))
+for _, v in mp.unpacker(src) do
+    c = nil
+    if v[2] ~= nil then
+	c = string.byte(v[2])
+    end
+    print("Time ",v[1]," key char ",c," key mod ",v[3])
+end
+
+
+
+
+
+
+
+
+
+
 threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
@@ -44,6 +67,8 @@ r2 = threadmouse(callback,settings["mouse"])
 r3 = threadxorg(callback)
 
 x,y,z = r1:join()
+
+print(x,y,z)
 x,y,z = r2:join()
 x,y,z = r3:join()
 

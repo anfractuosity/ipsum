@@ -1,5 +1,8 @@
 function grabber(callback,ev,keymap)
 	socket = require("socket")
+	
+	log = io.open("log.bin", "ab")
+	
 	weight = {
 	      ["Shift"]=		        1,
 	      ["AltGr"]=			2,
@@ -85,7 +88,7 @@ function grabber(callback,ev,keymap)
 	
 
 
-
+	mp = require("MessagePack")
 	utils = require("utils")
 
 	key = {}
@@ -207,13 +210,25 @@ function grabber(callback,ev,keymap)
 						k = symbol[k]
 					end	
 				end
+		
+				code = nil
 				if #k > 1 then
-					k = "<"..k..">"
+					code = "<"..k..">"
+					k = nil
 				end
 				--print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
                                 
 
-		io.write(k)
+		--io.write(k)
+
+                prot = {}
+		prot[1] = socket.gettime()*1000
+		prot[2] = k
+		prot[3] = code
+
+		log:write(mp.pack(prot))
+		log:flush()
+		
 --callback(1,"press "..k)
 
 
