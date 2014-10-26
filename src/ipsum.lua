@@ -8,8 +8,6 @@ lasthash = {["tmp"]="hi"}
 local lind = lanes.linda()
 local lock = lanes.genlock(lind,"M",1)
 
-print(arg[1])
-
 function callback(evtid,value)
 	if evtid==3 then
 		print("call back ",evtid," ",value["windowname"])
@@ -37,21 +35,32 @@ end
 local settings = JSON:decode(file:read("*all")) -- decode example
 
 
+if arg[1] ~= nil and arg[1] == "dump" then
+
+	local mp = require ("MessagePack")
+	local ltn12 = require 'ltn12'
 
 
-local mp = require ("MessagePack")
-local ltn12 = require 'ltn12'
-src = ltn12.source.file(io.open('log.bin', 'rb'))
-for _, v in mp.unpacker(src) do
-    c = nil
-    if v[2] ~= nil then
-	c = string.byte(v[2])
-    end
-    print("Time ",v[1]," key char ",c," key mod ",v[3])
-end
+	src = ltn12.source.file(io.open(settings["keylog"], 'rb'))
 
+	for _, v in mp.unpacker(src) do
+		c = nil
+    		if v[2] ~= nil then
+			c = string.byte(v[2])
+    		end
+    		print("Time ",v[1]," key char ",c," key mod ",v[3])
+	end
 
+        src = ltn12.source.file(io.open(settings["xlog"], 'rb'))                                                             
+                                                                                                                               
+        for _, v in mp.unpacker(src) do                                                                                        
+                print("Time ",v[1]," Window id ",v[2]," Window title ",v[3])                                                            
+        end    
 
+	
+	return
+
+end 
 
 
 
@@ -65,12 +74,11 @@ threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
 r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"],settings["keylog"])
 r2 = threadmouse(callback,settings["mouse"])
-r3 = threadxorg(callback)
+r3 = threadxorg(callback,settings["xlog"])
 
-x,y,z = r1:join()
-
+x,y,z = r3:join()
 print(x,y,z)
 x,y,z = r2:join()
-x,y,z = r3:join()
+x,y,z = r1:join()
 
 --print(x,y,z)

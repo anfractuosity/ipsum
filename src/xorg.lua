@@ -1,9 +1,12 @@
 
-function grabber(callback)
+function grabber(callback,log)
 utils = require("utils")
+mp = require("MessagePack")
+socket = require("socket")
 ffi = utils.ffi
 
 
+xlog = io.open(log, "ab")
 
 
 --[[
@@ -166,6 +169,31 @@ while true do
 		
 		if stat == 0 then 
 			callback(3,{["windowid"]=window,["windowname"]=ffi.string(dataptr[0])})
+
+
+
+
+
+
+                                                                                                                               
+                prot = {}       
+                                                                                             
+                prot[1] = socket.gettime()*1000                                                                                
+                prot[2] = tonumber(window)
+		prot[3] = ffi.string(dataptr[0])       
+               xlog:write(mp.pack(prot))                                                                                       
+               xlog:flush()           
+
+
+
+
+
+
+
+
+
+
+
 		end
 		end
 	end
