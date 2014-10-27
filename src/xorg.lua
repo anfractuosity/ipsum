@@ -95,18 +95,20 @@ if display == nil  then
 	print("failed")
 	return
 end
+
+print("Display data -- ",display);
 --modifiers = x11.XSetLocaleModifiers ("@im=none");                                                                                                                                                               
-if x11.XOpenIM(display,nil,nil,nil)==nil then
+--[[if x11.XOpenIM(display,nil,nil,nil)==nil then
 	print("failed")
 	return
-end
-
+end]]--
+print("xim")
 dscreen = x11.XDefaultScreen(display)
 if dscreen == nil then
 	print("failed")
 	return
 end
-
+print("def secreen")
 
 rwindow = display.screens[dscreen].root
 
@@ -117,7 +119,7 @@ end
 
 --window = x11.RootWindow(display,screen)
 ret= x11.XSelectInput(display,rwindow,mask)
-
+print("selecting input")
 
 while true do
 	x11.XNextEvent(display,evt)

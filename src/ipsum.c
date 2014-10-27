@@ -137,7 +137,8 @@ int grabscreenshot()
 
 Imlib_Load_Error err;
 imlib_save_image_with_error_return(file,&err);
-
+	
+	XCloseDisplay(disp);
 
  //  imlib_save_image(file);
 	printf("here\n");
