@@ -2,6 +2,8 @@ local lanes = require "lanes".configure{ with_timers = false,protect_allocator =
 local key = require ("keylogging")
 local mouse = require("mouselogging")
 local xorg = require("xorg")
+local screenshot = require("screenshot")
+
 io.stdout:setvbuf 'no' 
 lasthash = {["tmp"]="hi"}
 
@@ -16,14 +18,14 @@ function callback(evtid,value)
 	end
 end
 
-glob={["lasthash"]=lasthash, 
+glob={["lasthash"]=lasthash,
+      ["grabscreenshot"]=grabscreenshot, 
       ["lind"]=lind,
      ["lock"]=lock
      }
 
 
 	
-grabscreenshot()
 
 
 JSON = require("JSON") 
@@ -69,15 +71,19 @@ end
 
 
 
-
+threadscreen = lanes.gen("*",{globals=glob},screenshot.grabber) 
 threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
+
+r4 = threadscreen(callback,settings["screenshots"])  
 r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"],settings["keylog"])
 r2 = threadmouse(callback,settings["mouse"])
 r3 = threadxorg(callback,settings["xlog"])
 
+x,y,z = r4:join()
+print(x,y,z)
 x,y,z = r3:join()
 x,y,z = r2:join()
 x,y,z = r1:join()

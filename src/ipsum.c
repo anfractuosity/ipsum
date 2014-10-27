@@ -32,15 +32,21 @@
 
 
 
-
+int grabscreenshot();
 
 lua_State* L;
 
 int luaopen_mymodule(lua_State *L){
+	
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
-	lua_pushcfunction(L, luaopen_socket_core);                                                                                          	   lua_setfield(L,-2,"socket.core");
+	lua_pushcfunction(L, luaopen_socket_core);                                                                                          	   
+	lua_setfield(L,-2,"socket.core");
 	lua_pop(L,2);
+	
+	        lua_register(L,"grabscreenshot",grabscreenshot);                                                                                                                                                        
+
+
 	return 0;
 }
 
@@ -66,7 +72,7 @@ int                 image_width = 0, image_height = 0;
 
 
 
-int grabscreenshot()
+int grabscreenshot(lua_State *L)
 {
    char               *s;
    Imlib_Image        *im = NULL;
@@ -85,7 +91,9 @@ int grabscreenshot()
    draw = None;
    wo = ho = 0;
 
-   file = "output.png";
+
+
+   file = lua_tostring(L, 1);
 
    if (!display_name)
       display_name = ":0";
