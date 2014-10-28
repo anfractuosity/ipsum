@@ -55,11 +55,11 @@ if arg[1] ~= nil and arg[1] == "dump" then
     		print("Time ",v[1]," key char ",c," key mod ",v[3])
 	end
 
-        src = ltn12.source.file(io.open(settings["xlog"], 'rb'))                                                             
+       --[[ src = ltn12.source.file(io.open(settings["xlog"], 'rb'))                                                             
                                                                                                                                
         for _, v in mp.unpacker(src) do                                                                                        
                 print("Time ",v[1]," Window id ",v[2]," Window title ",v[3])                                                            
-        end    
+        end   ]]-- 
 
 	
 	return

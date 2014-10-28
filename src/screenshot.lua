@@ -5,7 +5,7 @@ function grabber(callback,path)
 	while true do
 		
 		grabscreenshot(path.."screenshot"..tonumber(i)..".png") 
-		os.execute("sleep " .. tonumber(1))
+		os.execute("sleep " .. tonumber(60))
 		
 		i = i + 1
 	end
