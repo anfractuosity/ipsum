@@ -76,6 +76,10 @@ threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
+
+xorg.grabber(callback,settings["xlog"])
+os.exit(1)
+
 r3 = threadxorg(callback,settings["xlog"]) 
 r4 = threadscreen(callback,settings["screenshots"])  
 r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"],settings["keylog"])
@@ -83,6 +87,7 @@ r2 = threadmouse(callback,settings["mouse"])
 
 x,y,z = r3:join()
 print(x,y,z)
+os.exit(1)
 x,y,z = r4:join()
 x,y,z = r2:join()
 x,y,z = r1:join()

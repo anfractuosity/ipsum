@@ -135,12 +135,22 @@ while true do
 	fmt = ffi.new("int")
 
         netactivewindow_atm = x11.XInternAtom(display,at,false)
+	
+	if netactivewindow_atm == nil then
+		print("WTH")
+		os.exit(1)
+	end
 
+	print("neta ",netactivewindow_atm)
+	print("nitems ",nitems," nbytes ",nbytes," data ",data," atom ",atom," at", at, " act ",act," fmt ",fmt) 
+	
 	nitemsptr = ffi.new("unsigned long[1]",nitems)
 	dataptr = ffi.new("unsigned char*[1]",data)
 	actptr = ffi.new("unsigned long[1]",act)
 	fmtptr = ffi.new("int[1]",fmt)
 	nbytesptr = ffi.new("unsigned long[1]",nbytes)
+
+	print("ptr ",nitemsptr," dataptr ",dataptr," actp ",actptr, " fmtptr ", fmtptr, " nbytesptr ",nbytesptr)
 
 	if netactivewindow_atm == nil then
 		print("BadATM")
@@ -151,12 +161,15 @@ while true do
 	 function errhndl(display,xerror) 			
 			
 				print("error -------------- ",xerror.error_code)
+				print("error -------------- here ")
 				eflag = 1
+				print("error --------------- here2")
 				--os.exit(1)
 	end
 
+	print("casting ",errhndl)
 	local cb = ffi.cast("XErrorHandler",errhndl)
-
+	print("casted ",cb)
 	
 
 	ret1 = x11.XSetErrorHandler(cb)
@@ -182,9 +195,11 @@ while true do
 		os.exit(1)
 	end
 
-	
+	print(">>>>>>> actptr ",actptr)
+
 	if actptr[0] > 0 then 
-	        window = ffi.cast("unsigned long*",dataptr[0])[0]                                               
+		print(">>>>>>>> A ")
+	        window = ffi.cast("unsigned long*",dataptr[0])[0]                                       print(">>>>>>>> B ")
 		if window == 0 then
 			print("window error")
 			--os.exit(1)
@@ -192,21 +207,24 @@ while true do
 		else 
 		--	print("about to get stuff from ",window)
 	 stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
-		
+		print("STAT >>>>>>> ",stat)
 		if stat == 0 then 
+			print("DOING CALLBACK")
 			callback(3,{["windowid"]=window,["windowname"]=ffi.string(dataptr[0])})
 
-
+			print("BACK ERE")
 
 
 
 
                                                                                                                                
                 prot = {}       
-                                                                                             
+                                                                                             	print("SETTING PROTO")
                 prot[1] = socket.gettime()*1000                                                                                
                 prot[2] = tonumber(window)
-		prot[3] = ffi.string(dataptr[0])       
+		prot[3] = ffi.string(dataptr[0])    
+
+   print("DONE SETTING PROTO")
                xlog:write(mp.pack(prot))                                                                                       
                xlog:flush()           
 
@@ -226,9 +244,15 @@ while true do
 
 	::bob::
 	
-	
+	if eflag > 0 then
+		print("EFLAG")
+	else
+		print("bob")
+	end	
 	x11.XSetErrorHandler(nil)
+	print("unset error handler")
 	cb:free()	
+	print("freed stuff")
 end
 
 end
