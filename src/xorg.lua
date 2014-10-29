@@ -148,23 +148,47 @@ while true do
 
 	eflag = 0
 
-	x11.XSetErrorHandler( function(display,xerror) 			
+	 function errhndl(display,xerror) 			
 			
-				--print("error",xerror.error_code)
+				print("error -------------- ",xerror.error_code)
 				eflag = 1
-			end );
+				--os.exit(1)
+	end
+
+	local cb = ffi.cast("XErrorHandler",errhndl)
+
+	
+
+	ret1 = x11.XSetErrorHandler(cb)
+
+	print("err handler",ret1)
+
+	if eflag == 1 or ret1 == nil then
+		eflag = 1
+		goto bob
+	end
+	
 	
 	stat = x11.XGetWindowProperty(display,rwindow,netactivewindow_atm,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
+
+	if eflag == 1 then
+		goto bob
+	end
+
+	print("PROP STAT ",stat)
 
 	if(stat ~= 0) then
 		print("error")
 		os.exit(1)
 	end
 
-
+	
 	if actptr[0] > 0 then 
 	        window = ffi.cast("unsigned long*",dataptr[0])[0]                                               
 		if window == 0 then
+			print("window error")
+			--os.exit(1)
+			goto bob
 		else 
 		--	print("about to get stuff from ",window)
 	 stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
@@ -186,21 +210,25 @@ while true do
                xlog:write(mp.pack(prot))                                                                                       
                xlog:flush()           
 
-
-
-
-
-
-
-
-
-
+		else
+			print("get window property error",stat)
 
 		end
+
+
+
+
+
+
+
 		end
 	end
-	x11.XSetErrorHandler(nil)	
 
+	::bob::
+	
+	
+	x11.XSetErrorHandler(nil)
+	cb:free()	
 end
 
 end

@@ -213,8 +213,7 @@ function grabber(callback,ev,keymap,output)
 		
 				code = nil
 				if #k > 1 then
-					code = "<"..k..">"
-					k = nil
+					k = "<"..k..">"
 				end
 				--print("press ",k," @ time = ",socket.gettime()," active= ",active," weight= ",sum)
                                 
@@ -224,7 +223,8 @@ function grabber(callback,ev,keymap,output)
                 prot = {}
 		prot[1] = socket.gettime()*1000
 		prot[2] = k
-		prot[3] = code
+		
+		print("KEY ", k)
 
 		log:write(mp.pack(prot))
 		log:flush()
