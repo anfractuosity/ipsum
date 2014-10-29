@@ -206,6 +206,14 @@ while true do
 			goto bob
 		else 
 		--	print("about to get stuff from ",window)
+
+
+
+print(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
+
+
+
+
 	 stat = x11.XGetWindowProperty(display,window,39,0,2147483647,false,0,actptr,fmtptr,nitemsptr,nbytesptr,dataptr)
 		print("STAT >>>>>>> ",stat)
 		if stat == 0 then 
