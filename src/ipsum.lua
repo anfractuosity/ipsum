@@ -77,8 +77,8 @@ threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 
 
-xorg.grabber(callback,settings["xlog"])
-os.exit(1)
+--xorg.grabber(callback,settings["xlog"])
+--os.exit(1)
 
 r3 = threadxorg(callback,settings["xlog"]) 
 r4 = threadscreen(callback,settings["screenshots"])  

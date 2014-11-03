@@ -44,7 +44,7 @@ int luaopen_mymodule(lua_State *L){
 	lua_setfield(L,-2,"socket.core");
 	lua_pop(L,2);
 	
-	        lua_register(L,"grabscreenshot",grabscreenshot);                                                                                                                                                        
+         lua_register(L,"grabscreenshot",grabscreenshot);                                                                                                                                                        
 
 
 	return 0;
@@ -187,11 +187,20 @@ int main ( int argc, char *argv[] )
 
 	lua_register(L,"grabscreenshot",grabscreenshot); 
 
+
+      //  lua_pushcfunction(L, grabscreenshot);                                                                                                 
+      //  lua_setfield(L,-2,"grabscreenshot"); 
+
+
+
+
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
 	lua_pushcfunction(L, luaopen_socket_core);
 	lua_setfield(L,-2,"socket.core"); 
 	lua_pop(L,2);
+
+	//luaopen_socket_core(L);
 
 	lua_newtable(L);
 

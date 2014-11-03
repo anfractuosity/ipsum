@@ -165,6 +165,8 @@ while true do
 				eflag = 1
 				print("error --------------- here2")
 				--os.exit(1)
+
+				return 0
 	end
 
 	print("casting ",errhndl)
