@@ -9,13 +9,13 @@
 #include "lua/ext.h"
 #include <stdint.h>
 
-//#include "config.h"
 #include <X11/Xlib.h>
 #include <X11/extensions/XShm.h>
 #include <X11/Xutil.h>
 #include <X11/extensions/shape.h>
 #include <X11/Xatom.h>
 #include <X11/Xos.h>
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -24,19 +24,9 @@
 #include <unistd.h>
 #include <errno.h>
 
-
-
-
-
-
-
-
-int grabscreenshot();
-
 lua_State* L;
 
 int luaopen_mymodule(lua_State *L){
-	
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
 	lua_pushcfunction(L, luaopen_socket_core);                                                                                          	   
@@ -49,11 +39,12 @@ extern int core(lua_State *L){
 
 }
 
-    void setfield (const int index, char *value) {
-      lua_pushnumber(L, index);
-      lua_pushstring(L, value);
-      lua_settable(L, -3);
-    }
+
+void setfield (const int index, char *value) {
+	lua_pushnumber(L, index);
+	lua_pushstring(L, value);
+	lua_settable(L, -3);
+}
 
 
 Display            *disp;
@@ -65,21 +56,10 @@ int                 image_width = 0, image_height = 0;
 int main ( int argc, char *argv[] )
 {
 	L = luaL_newstate();
-
     	luaL_openlibs(L); /* Load Lua libraries */
-
-	//luaopen_package(L);
 	
 	luaL_requiref(L, "lanes.core", luaopen_lanes_core, 1); 
 	lua_register(L, "luaopen_mymodule", luaopen_mymodule);
-
-
-
-      //  lua_pushcfunction(L, grabscreenshot);                                                                                                 
-      //  lua_setfield(L,-2,"grabscreenshot"); 
-
-
-
 
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "preload");
@@ -87,20 +67,12 @@ int main ( int argc, char *argv[] )
 	lua_setfield(L,-2,"socket.core"); 
 	lua_pop(L,2);
 
-	//luaopen_socket_core(L);
-
 	lua_newtable(L);
-
 	int i = 1;
-
 	for(i=1;i<argc+1;i++){
-	      	setfield(i,argv[i]);       /* table.b = ct->b */
+	      	setfield(i,argv[i]);       
 	}
-      	lua_setglobal(L, "arg");    /* `name' = table */
-
-
-
-
+      	lua_setglobal(L, "arg");  
 
 	#include "lua/loadlua.c"
 
