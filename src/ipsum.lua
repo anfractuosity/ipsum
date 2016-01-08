@@ -71,7 +71,7 @@ end
 
 
 
-threadscreen = lanes.gen("*",{globals=glob},screenshot.grabber) 
+--threadscreen = lanes.gen("*",{globals=glob},screenshot.grabber) 
 threadkey = lanes.gen("*",{globals=glob},key.grabber)
 threadmouse = lanes.gen("*",{globals=glob},mouse.grabber)
 threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
@@ -81,7 +81,7 @@ threadxorg = lanes.gen("*",{globals=glob},xorg.grabber)
 --os.exit(1)
 
 r3 = threadxorg(callback,settings["xlog"]) 
-r4 = threadscreen(callback,settings["screenshots"])  
+--r4 = threadscreen(callback,settings["screenshots"])  
 r1 = threadkey(callback,settings["keyboard"],settings["keyboardmap"],settings["keylog"])
 r2 = threadmouse(callback,settings["mouse"])
 
