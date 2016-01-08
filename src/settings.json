@@ -1,8 +1,8 @@
 {
 	"keyboard"    : "/dev/input/event3",
-	"keylog"      : "logs/keys.bin",
+	"keylog"      : "/tmp/logs/keys.bin",
 	"keyboardmap" : "maps/mine.map",
 	"mouse"       : "/dev/input/event4",
-	"xlog"	      : "logs/x.bin",
-	"screenshots" : "logs/screenshots/"
+	"xlog"	      : "/tmp/logs/x.bin",
+	"screenshots" : "/tmp/logs/screenshots/"
 }
